@@ -4,7 +4,7 @@ from src.basket_pricer.utils import exceptions, amount
 class Product:
     sku : int
     name : str
-    price : float | str | Decimal
+    price : int | float | str | Decimal
     _stock : int
 
     def __init__(self,sku , name, price, stock):

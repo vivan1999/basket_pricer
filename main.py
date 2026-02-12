@@ -5,18 +5,20 @@ from src.basket_pricer.models.product import Product
 from decimal import Decimal
 from src.basket_pricer.pricer.basket_pricer import BasketPricer
 from src.basket_pricer.offers.percentage_discount import PercentageOffer
+from src.basket_pricer.offers.buy_x_get_y_free import BuyXgetYfree
 
 basket = Basket([
-    BasketItem(1, 2),
-    BasketItem(2, 1)
+    BasketItem(sku =1, qty = 2),
+    BasketItem(sku = 2, qty = 9)
 ])
 
 catalogue = Catalogue([
-    Product(1, "Baked Beans", Decimal("0.99"), 2),
-    Product(2, "Biscuits", Decimal("1.20"), 4),
+    Product(sku = 1, name ="Baked Beans", price=Decimal("0.99"), stock=5),
+    Product(sku = 2, name = "Biscuits", price=Decimal("1"), stock=10),
 ])
 offers = [
-    PercentageOffer(2, 10.0)
+    #PercentageOffer(2, 10.0),
+    BuyXgetYfree(sku= 2,x=2,y=1)
 ]
 pricer = BasketPricer()
 

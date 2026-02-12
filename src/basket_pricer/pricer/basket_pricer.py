@@ -3,6 +3,7 @@ from src.basket_pricer.models.catalogue import Catalogue
 from src.basket_pricer.offers.abc_offer import AbstractBaseOffer
 from src.basket_pricer.pricer.price_summary import PriceSummary
 from decimal import Decimal
+from src.basket_pricer.utils.amount import round_amount
 
 from typing import List
 
@@ -20,5 +21,7 @@ class BasketPricer:
 
         total = subTotal - total_discount
         
-        return PriceSummary(subTotal=subTotal, discount=total_discount, totalAmount=total)
+        return PriceSummary(subTotal=round_amount(subTotal), 
+                            discount=round_amount(total_discount), 
+                            totalAmount=round_amount(total))
 
