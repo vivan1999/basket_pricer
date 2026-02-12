@@ -1,0 +1,4 @@
+#python cpy files
+**/__pycache__/
+**/*.py[cod]
+*.pyo
