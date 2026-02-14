@@ -1,6 +1,12 @@
 # testing 
 pytest
+pytest-cov
 
 # code quality
 pylint
 black
+flake8
+isort
+
+# dev tools
+pre-commit

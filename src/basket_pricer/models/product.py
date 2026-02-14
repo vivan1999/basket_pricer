@@ -10,29 +10,21 @@ class Product:
     sku : int
     name : str
     price : Money
-    _stock : int # optional (for future use)
     
     def __post_init__(self):
-        if not self.name:
+        if not self.name or not self.name.strip():
             logger.error("Product name cannot be empty.")
-            raise exceptions.PriceException(f"Product name is required for product id : {self.sku}")
+            raise exceptions.PricerException(f"Product name is required and cannot be empty for sku: {self.sku}")
         if not self.price.is_positive():
-            logger.error("Product price should be positive.")
-            raise exceptions.PriceException(f"Price cannot be negative: sku {self.sku}")
-        if self._stock < 0:
-            raise ValueError(f"Stock cannot be negative {self.sku}")
+            logger.error("Product price must be positive.")
+            raise ValueError(f"Price must be positive: sku {self.sku}")
         
         logger.debug(f"Product created {self.name} with price {self.price}")
-
-    @property
-    def stock(self):
-        return self._stock
 
     def __str__(self):
         return f"Product {self.name} : {self.price}"
 
     def __repr__(self):
         return (
-            f"Product(name='{self.name}', price: {self.product.price!r}), "
-            f"stock={self.stock})"
+            f"Product(name='{self.name}', price: {self.price})"
         )
