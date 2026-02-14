@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from src.basket_pricer.models.product import Product
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -11,7 +12,7 @@ class BasketItem:
     def __post_init__(self):
         if not isinstance(self.product, Product):
             logger.error(f"product must be of type Product but recieved : {type(self.product).__name__}")
-            raise TypeError(f"product must be of type Product but recieved : {type(self.product).__name__}")
+            raise TypeError(f"product must be Product type but recieved : {type(self.product).__name__}")
         if self.qty<=0:
             logger.error(f"Quantity should be positive but recived: {self.qty}")
             raise ValueError(f"Basket item quantity must be positive but recieved : {self.qty}")
@@ -26,6 +27,6 @@ class BasketItem:
     
     def __repr__(self) -> str:
         return (
-            f"BasketItem(product=Product('{self.product.name}', {self.product.price!r}), "
+            f"BasketItem(product=Product('{self.product.name}', {self.product.price}), "
             f"quantity={self.qty})"
         )

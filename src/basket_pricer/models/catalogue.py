@@ -1,7 +1,7 @@
 from src.basket_pricer.models.product import Product
 from typing import Dict
-from src.basket_pricer.utils.exceptions import PriceException
-from decimal import Decimal
+from src.basket_pricer.utils.exceptions import PricerException
+from src.basket_pricer.models.money import Money
 import logging
 logger = logging.getLogger(__name__)
 
@@ -19,12 +19,12 @@ class Catalogue:
         
         if product.sku in self._products:
                 logger.error(f"'{product.name}' is already present in Catalogue")
-                raise PriceException(f"SKU {[product].sku} for {product.name} is already present in Catalogue")
+                raise PricerException(f"SKU {product.sku} for {product.name} is already present in Catalogue")
         
         self._products[product.sku] = product
         logger.info(f"Product '{product.name}' is added to the catalogue")
 
-    def fetch_price(self, sku: int) -> Decimal:
+    def fetch_price(self, sku: int) -> Money:
         if sku not in self._products:
             logger.error(f"Product with sku {sku} not found in the catalogue")
             raise ValueError(f"Sku {sku} not found in catalogue")
