@@ -1,5 +1,3 @@
-import pytest
-
 from src.basket_pricer.models import Basket, Money
 
 
