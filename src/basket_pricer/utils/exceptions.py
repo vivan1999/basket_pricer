@@ -5,6 +5,14 @@ class PricerException(Exception):
     "Base exception for all the errors"
     pass
 
+# Pricing exceptions
+class PricingException(PricerException):
+    "raised for all the money related errors inside pricer"
+    def __init__(self, message :Optional[str] = None):
+        if message is None:
+            message = f"Error in pricing"
+        super().__init__(message)
+
 # Basket Exceptions
 class InvalidBasketError(PricerException):
     "Invalid Basket"
@@ -33,3 +41,9 @@ class DuplicateProductError(CatalogueError):
         super().__init__(f"Product '{sku}' already exists in catalogue")
 
 # Offer exceptions
+class InvalidOfferConfigError(PricerException):
+    def __init__(self, offer: str, message: Optional[str] = None):
+        if message is None:
+            message = f"Offer {offer} is confiured properly."
+        super().__init__(message)
+

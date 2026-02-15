@@ -18,17 +18,6 @@ class Basket:
                 self.add_item(item)
         logger.debug(f"Created Basket with total {len(self._items)} distinct products.")
     
-    def calculate_subtotal(self, catalogue: Catalogue):
-        sub_total = Money("0")
-        for sku, basketItem in self._items.items():
-            if not catalogue.has_product(sku):
-                logger.error(f"Product '{basketItem.product.name}' from basket is not present in the catalogue")
-                raise PricerException(f"Product {sku} not in the catalogue")
-            item_price = catalogue.fetch_price(sku)
-            basket_item_total = item_price * basketItem.qty
-            sub_total = basket_item_total + sub_total
-        return sub_total
-    
     def add_item(self, basket_item : BasketItem)-> "Basket":
         if not isinstance(basket_item, BasketItem):
             logger.error(f"Must be of basket Item type and got {type(basket_item).__name__}")
@@ -45,8 +34,20 @@ class Basket:
             logger.info(f"item with sku {basket_item.product.sku} added in the basket")
         logger.debug(f"Added '{basket_item.product.name}' in Basket and now total {len(self._items)} distinct products are present in basket")
     
+    def get_items_list(self):
+        return self._items
+    
     def has_product(self, sku):
         return sku in self._items
+    
+    def fetch_product(self,sku):
+        if sku < 0:
+            raise ValueError("Sku passed must be positive")
+        basket_item = self._items[sku]
+        if not isinstance(basket_item, BasketItem):
+            logger.error(f"Item recieved using sku is expected to be of type BASKET but got {type(basket_item).__name__}")
+            raise TypeError("Basket Item must be of type BASKET")
+        return basket_item.product
     
     def fetch_quantity(self, sku):
         basket_item = self._items.get(sku, None)

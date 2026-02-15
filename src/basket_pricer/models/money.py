@@ -58,10 +58,21 @@ class Money:
         return Money(self._amount * self.to_decimal(multiplier))
     
     # Cmparison Operators
+    def __eq__(self, other: "Money") ->bool:
+        if not isinstance(other, Money):
+            raise TypeError(f"Cannot compare Money and {type(other).__name__}")
+        return self._amount == other._amount
+    
     def __gt__(self, other:"Money") -> bool:
         if not isinstance(other, Money):
             raise TypeError(f"Cannot compare Money and {type(other).__name__}")
         return self._amount > other._amount
+    
+    def __lt__(self, other: "Money") -> bool:
+        if not isinstance(other, Money):
+            raise TypeError(f"Cannot compare Money and {type(other).__name__}")
+        return self._amount < other._amount
+    
     
     # representation of money
     def __str__(self):
