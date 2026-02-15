@@ -1,12 +1,14 @@
 import pytest
-from src.basket_pricer.models.product import Product
-from src.basket_pricer.models.basket_item import BasketItem
+
 from src.basket_pricer.models.basket import Basket
+from src.basket_pricer.models.basket_item import BasketItem
 from src.basket_pricer.models.money import Money
+from src.basket_pricer.models.product import Product
 from src.basket_pricer.utils.exceptions import PricerException
 
+
 class TestProduct:
-    """ For testing Product Model and its functionality """
+    """For testing Product Model and its functionality"""
 
     def test_create_product(self) -> None:
         """Test product initialization"""
@@ -17,14 +19,14 @@ class TestProduct:
 
     def test_product_is_immutable(self) -> None:
         """Test immutability of the product"""
-        product = Product(sku = 1, name="Beans", price=Money("0.99"))
+        product = Product(sku=1, name="Beans", price=Money("0.99"))
         with pytest.raises(AttributeError):  # dataclass frozen raises AttributeError
             product.name = "Different Beans"
 
     def test_product_with_empty_name_raises_error(self) -> None:
         """Test empty product name raises Error"""
         with pytest.raises(PricerException, match="Product name is required"):
-            Product(sku = 1, name="", price=Money("0.99"))
+            Product(sku=1, name="", price=Money("0.99"))
 
     def test_product_with_whitespace_only_name_raises_error(self) -> None:
         """Test that whitespace-only name is rejected."""
@@ -62,26 +64,31 @@ class TestProduct:
         # Dataclass default __repr__ shows all fields
         assert f"Product(name='{product.name}', price: {product.price})"
 
+
 class TestBasketItem:
-    """ For testing Basket Item Model and its functionality """
+    """For testing Basket Item Model and its functionality"""
 
     @pytest.fixture
-    def sardines_product(self)-> Product:
+    def sardines_product(self) -> Product:
         """Sardines product fixture"""
-        return Product(sku = 1, name="Sardines", price= Money("0.99"))
-    
-    def test_create_valid_basket_item(self, sardines_product: Product)-> BasketItem:
+        return Product(sku=1, name="Sardines", price=Money("0.99"))
+
+    def test_create_valid_basket_item(self, sardines_product: Product) -> BasketItem:
         """Validate initialization of basked Item using product fixture"""
         basket_item = BasketItem(product=sardines_product, qty=2)
         assert basket_item.product == sardines_product
         assert basket_item.qty == 2
-    
-    def test_basket_item_with_zero_quantity_raises_error(self, sardines_product: Product) -> None:
+
+    def test_basket_item_with_zero_quantity_raises_error(
+        self, sardines_product: Product
+    ) -> None:
         """Test that zero quantity is rejected."""
         with pytest.raises(ValueError, match="must be positive"):
             BasketItem(product=sardines_product, qty=0)
 
-    def test_basket_item_with_negative_quantity_raises_error(self, sardines_product: Product) -> None:
+    def test_basket_item_with_negative_quantity_raises_error(
+        self, sardines_product: Product
+    ) -> None:
         """Test that negative quantity is rejected."""
         with pytest.raises(ValueError, match="must be positive"):
             BasketItem(product=sardines_product, qty=-1)
@@ -91,64 +98,74 @@ class TestBasketItem:
         with pytest.raises(TypeError, match="must be Product"):
             BasketItem(product="not a product", qty=1)  # type: ignore
 
-    def test_basket_item_total_price_calculation(self, sardines_product: Product) -> None:
+    def test_basket_item_total_price_calculation(
+        self, sardines_product: Product
+    ) -> None:
         """Test total_price calculation"""
         item = BasketItem(product=sardines_product, qty=2)
         expected_total = Money("0.99") * 2
         assert item.total_price()._amount == expected_total._amount
 
-    def test_basket_item_quantity_can_be_modified(self, sardines_product: Product) -> None:
+    def test_basket_item_quantity_can_be_modified(
+        self, sardines_product: Product
+    ) -> None:
         """Test that quantity can be changed (mutable)"""
         item = BasketItem(product=sardines_product, qty=2)
         item.qty = 5
         assert item.qty == 5
 
+
 class TestBasket:
-    """ For testing basket Model and it functionality """
+    """For testing basket Model and it functionality"""
+
     @pytest.fixture
     def beans(self) -> Product:
         """Baked Beans Product Fixture"""
-        return Product(sku =1,name="Baked Beans", price=Money("0.99"))
+        return Product(sku=1, name="Baked Beans", price=Money("0.99"))
 
     @pytest.fixture
     def biscuits(self) -> Product:
         """Biscuits product fixture"""
-        return Product(sku =2, name="Biscuits", price=Money("1.20"))
+        return Product(sku=2, name="Biscuits", price=Money("1.20"))
 
     @pytest.fixture
     def sardines(self) -> Product:
         """Sardines product fixture"""
-        return Product(sku =3, name="Sardines", price=Money("1.89"))
-    
+        return Product(sku=3, name="Sardines", price=Money("1.89"))
+
     @pytest.fixture
-    def basket_item1(self, beans: Product)-> BasketItem:
-        """ basket item 1 fixture """
+    def basket_item1(self, beans: Product) -> BasketItem:
+        """basket item 1 fixture"""
         return BasketItem(product=beans, qty=2)
-    
+
     @pytest.fixture
-    def basket_item2(self, biscuits: Product)-> BasketItem:
-        """ basket item 2 fixture """
+    def basket_item2(self, biscuits: Product) -> BasketItem:
+        """basket item 2 fixture"""
         return BasketItem(product=biscuits, qty=1)
-    
+
     @pytest.fixture
-    def basket_item3(self, sardines: Product)-> BasketItem:
-        """ basket item 3 fixture """
+    def basket_item3(self, sardines: Product) -> BasketItem:
+        """basket item 3 fixture"""
         return BasketItem(product=sardines, qty=3)
-    
+
     def test_create_empty_basket(self) -> None:
         """Test creating an empty basket."""
         basket = Basket()
         assert basket.is_empty()
         assert len(basket._items) == 0
 
-    def test_add_multiple_different_items(self, basket_item1: BasketItem, basket_item2: BasketItem) -> None:
+    def test_add_multiple_different_items(
+        self, basket_item1: BasketItem, basket_item2: BasketItem
+    ) -> None:
         """Test adding different products to basket."""
         basket = Basket()
         basket.add_item(basket_item1)
         basket.add_item(basket_item2)
         assert len(basket._items) == 2  # Two different products
 
-    def test_add_same_item_twice_merges_quantity(self, basket_item1: BasketItem) -> None:
+    def test_add_same_item_twice_merges_quantity(
+        self, basket_item1: BasketItem
+    ) -> None:
         """Test that adding same product twice merges quantities."""
         basket = Basket()
         basket.add_item(basket_item1)
@@ -166,7 +183,7 @@ class TestBasket:
         basket = Basket()
         basket.add_item(basket_item1)
         quantity = basket.fetch_quantity(sku=1)
-        assert quantity == 2 # qty of beans(sku:1) in basket item is 2
+        assert quantity == 2  # qty of beans(sku:1) in basket item is 2
 
     def test_has_item_returns_true_for_existing_item(self, basket_item3) -> None:
         """Test has_item returns True for items in basket."""
@@ -177,8 +194,7 @@ class TestBasket:
     def test_has_item_returns_false_for_missing_item(self) -> None:
         """Test has_item returns False for items not in basket."""
         basket = Basket()
-        assert not basket.has_product(sku = 0)
-
+        assert not basket.has_product(sku=0)
 
     """def test_total_items_sums_all_quantities(
         self, basket_item1, basket_item2, basket_item3
