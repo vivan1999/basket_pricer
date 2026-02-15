@@ -11,7 +11,7 @@ class Money:
     def __init__(self, amount: Union[int, str, float, Decimal]):
         try:
             decimal_amount = self.to_decimal(amount)
-        except (ValueError, InvalidOperation) as e:
+        except (ValueError, InvalidOperation):
             logger.error("Invalid amount")
             logger.info(
                 "only accepts number as a str, float, int, and decimal as the amount."

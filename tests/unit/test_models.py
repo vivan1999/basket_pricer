@@ -36,7 +36,7 @@ class TestProduct:
     def test_product_with_zero_price_raises_error(self) -> None:
         """Test that zero price is rejected."""
         with pytest.raises(ValueError, match="must be positive"):
-            pro = Product(sku=1, name="Free Item", price=Money.zero())
+            Product(sku=1, name="Free Item", price=Money.zero())
 
     def test_product_with_negative_price_raises_error(self) -> None:
         """Test that negative price is rejected."""
@@ -189,7 +189,7 @@ class TestBasket:
         """Test has_item returns True for items in basket."""
         basket = Basket()
         basket.add_item(basket_item3)
-        assert basket.has_product(sku=3) == True
+        assert basket.has_product(sku=3)
 
     def test_has_item_returns_false_for_missing_item(self) -> None:
         """Test has_item returns False for items not in basket."""
@@ -205,5 +205,6 @@ class TestBasket:
         basket.add_item(basket_item2)
         basket.add_item(basket_item3)
 
-        assert basket.calculate_subtotal()== Money("8.85")._amount  # 0.99 * 2 (sku 1, qty 2) + 1.20 * 1 (sku 2, qty 1)+ 1.89 * 3 (sku 3, qty 3)
+        assert basket.calculate_subtotal()== Money("8.85")._amount
+        # 0.99 * 2 (sku 1, qty 2) + 1.20 * 1 (sku 2, qty 1)+ 1.89 * 3 (sku 3, qty 3)
     """

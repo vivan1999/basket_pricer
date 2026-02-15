@@ -30,13 +30,13 @@ class Basket:
                 product=basket_item.product, qty=new_qty
             )
             logger.info(
-                "item with sku is already present and hence updated the quantity in the basket"
+                "item with sku is already present, updated the quantity in the basket"
             )
         else:
             self._items[basket_item.product.sku] = basket_item
             logger.info(f"item with sku {basket_item.product.sku} added in the basket")
         logger.debug(
-            f"Added '{basket_item.product.name}' in Basket and now total {len(self._items)} distinct products are present in basket"
+            f"Added '{basket_item.product.name}'; total {len(self._items)} distinct products"
         )
 
     def get_items_list(self):
@@ -51,7 +51,7 @@ class Basket:
         basket_item = self._items[sku]
         if not isinstance(basket_item, BasketItem):
             logger.error(
-                f"Item recieved using sku is expected to be of type BASKET but got {type(basket_item).__name__}"
+                f"Expected type BASKET but got {type(basket_item).__name__}"
             )
             raise TypeError("Basket Item must be of type BASKET")
         return basket_item.product
@@ -65,7 +65,7 @@ class Basket:
 
     def __str__(self):
         if self.is_empty():
-            return f"Basket(items=0)"
+            return "Basket(items=0)"
         return f"Basket(items={len(self._items)}"
 
     def __repr__(self):

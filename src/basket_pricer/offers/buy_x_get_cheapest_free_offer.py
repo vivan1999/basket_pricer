@@ -78,7 +78,8 @@ class BuyXGetCheapestFreeOffer(AbstractBaseOffer):
         if len(all_eligible_items) < self.quantity:
             return Money.zero()
 
-        # Sorting by price DESCENDING (expensive first) so that expensive items are "bought", cheap ones are "free"
+        # Sorting by price DESCENDING (expensive first) so that
+        # expensive items are "bought", cheap ones are "free"
         all_eligible_items.sort(key=lambda x: x[1], reverse=True)
 
         # total groups can be formed

@@ -1,4 +1,4 @@
-from decimal import ROUND_HALF_UP, Decimal
+from decimal import Decimal
 
 import pytest
 
@@ -21,7 +21,8 @@ def test_money_creation(amount, output):
     assert money.amount == output
 
 
-# Validating if -nagative amount is passed in, so should be raising a Value Error with matching exception message
+# Validating if -nagative amount is passed in
+# so should be raising a Value Error with matching exception message
 def test_money_validation():
     with pytest.raises(ValueError, match="Money -1.00 cannot be negative."):
         Money("-1.00")

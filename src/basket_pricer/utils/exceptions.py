@@ -14,7 +14,7 @@ class PricingException(PricerException):
 
     def __init__(self, message: Optional[str] = None):
         if message is None:
-            message = f"Error in pricing"
+            message = "Error in pricing"
         super().__init__(message)
 
 

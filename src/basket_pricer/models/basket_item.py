@@ -14,10 +14,10 @@ class BasketItem:
     def __post_init__(self):
         if not isinstance(self.product, Product):
             logger.error(
-                f"product must be of type Product but recieved : {type(self.product).__name__}"
+                f"product must be of type Product but got : {type(self.product).__name__}"
             )
             raise TypeError(
-                f"product must be Product type but recieved : {type(self.product).__name__}"
+                f"product must be Product type but got : {type(self.product).__name__}"
             )
         if self.qty <= 0:
             logger.error(f"Quantity should be positive but recived: {self.qty}")
