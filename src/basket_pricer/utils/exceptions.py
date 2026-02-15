@@ -4,6 +4,7 @@ from typing import Optional
 # Base class
 class PricerException(Exception):
     "Base exception for all the errors"
+
     pass
 
 
@@ -20,17 +21,20 @@ class PricingException(PricerException):
 # Basket Exceptions
 class InvalidBasketError(PricerException):
     "Invalid Basket"
+
     pass
 
 
 class EmptyBasketError(InvalidBasketError):
     "raised when basket is empty"
+
     pass
 
 
 # Catalogue Errors
 class CatalogueError(PricerException):
     "raised on any catalogue Errors"
+
     pass
 
 

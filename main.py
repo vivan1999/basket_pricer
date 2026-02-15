@@ -3,7 +3,9 @@ from src.basket_pricer.models.basket_item import BasketItem
 from src.basket_pricer.models.catalogue import Catalogue
 from src.basket_pricer.models.money import Money
 from src.basket_pricer.models.product import Product
-from src.basket_pricer.offers.buy_x_get_cheapest_free_offer import BuyXGetCheapestFreeOffer
+from src.basket_pricer.offers.buy_x_get_cheapest_free_offer import (
+    BuyXGetCheapestFreeOffer,
+)
 from src.basket_pricer.offers.buy_x_get_y_free import BuyXgetYfree
 from src.basket_pricer.offers.percentage_discount import PercentageOffer
 from src.basket_pricer.pricer.basket_pricer import BasketPricer
