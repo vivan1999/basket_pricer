@@ -50,9 +50,7 @@ class Basket:
             raise ValueError("Sku passed must be positive")
         basket_item = self._items[sku]
         if not isinstance(basket_item, BasketItem):
-            logger.error(
-                f"Expected type BASKET but got {type(basket_item).__name__}"
-            )
+            logger.error(f"Expected type BASKET but got {type(basket_item).__name__}")
             raise TypeError("Basket Item must be of type BASKET")
         return basket_item.product
 
