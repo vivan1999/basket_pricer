@@ -22,7 +22,7 @@ class PercentageOffer(AbstractBaseOffer):
                 "Product sku's must be provided in the config of Offer's"
             )
         if self.percentage < 0:
-            raise InvalidOfferConfigError(f"Percentage must be positive")
+            raise InvalidOfferConfigError("Percentage must be positive")
         logger.debug(f"{self.name} offer is created.")
 
     def is_applicable(self, basket: Basket):

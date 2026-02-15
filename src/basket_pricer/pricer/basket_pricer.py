@@ -75,7 +75,7 @@ class BasketPricer:
         for sku, basket_item in basket_items.items():
             if not self.catalogue.has_product(sku):
                 logger.error(
-                    f"Product '{basket_item.product.name}' from basket is not present in the catalogue"
+                    f"Product '{basket_item.product.name}' from basket not present in catalogue"
                 )
                 raise CatalogueError(f"Product {sku} not in the catalogue")
             item_price = self.catalogue.fetch_price(sku)

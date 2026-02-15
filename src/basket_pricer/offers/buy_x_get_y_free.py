@@ -40,7 +40,7 @@ class BuyXgetYfree(AbstractBaseOffer):
             )  # if minimum required items are present in basket
         if not is_applicable:
             logger.debug(
-                f"Offer not valid on the basket, as minimum {min_req_qty} product requirements are not fullfilled."
+                f"Offer not valid on the basket, as minimum {min_req_qty} product are required"
             )
 
         return is_applicable
