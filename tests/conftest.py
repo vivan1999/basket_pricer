@@ -246,10 +246,26 @@ def beans_buy_2_get_1_free() -> BuyXgetYfree:
 
 
 @pytest.fixture
+def beans_20_percent_off() -> PercentageOffer:
+    """Fixture for 20% off beans offer."""
+    return OffersFactory.create_percentage_offer(
+        100, "20 percent off on beans", sku=1, percentage=20
+    )
+
+
+@pytest.fixture
 def sardines_25_percent_off() -> PercentageOffer:
     """Fixture for 25% off Sardines offer."""
     return OffersFactory.create_percentage_offer(
         102, "25 percent off on sardiness", sku=3, percentage=25
+    )
+
+
+@pytest.fixture
+def shampoo_large_25_percent_off() -> PercentageOffer:
+    """Fixture for 25% off Shampoo large offer."""
+    return OffersFactory.create_percentage_offer(
+        1000, "25 percent off on shampoo large", sku=6, percentage=25
     )
 
 

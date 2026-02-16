@@ -19,7 +19,7 @@ def main():
 
     basket = Basket(
         [
-            BasketItem(product=pro4, qty=6),
+            BasketItem(product=pro4, qty=2),
             BasketItem(product=pro5, qty=1),
             BasketItem(product=pro6, qty=3),
         ]
@@ -27,12 +27,12 @@ def main():
 
     offers = [
         PercentageOffer(id="percentage_10", name="10% Off", sku=5, percentage=10.0),
-        PercentageOffer(id="percentage_10", name="10% Off", sku=6, percentage=10.0),
+        PercentageOffer(id="percentage_20", name="20% Off", sku=5, percentage=20.0),
         BuyXgetYfree(id="buy2get1free", name="Buy 2 Get 1 Free", sku=4, buy=2, free=1),
         BuyXGetCheapestFreeOffer(
             id="buy3getcheapestfree",
             name="Buy 3 Get Cheapest free",
-            product_skus=[3, 5, 6],
+            product_skus=[4, 5, 6],
             quantity=3,
         ),
     ]
