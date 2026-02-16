@@ -1,8 +1,9 @@
 import logging
 from dataclasses import dataclass
 
-from src.basket_pricer.models.money import Money
 from src.basket_pricer.utils import exceptions
+
+from .money import Money
 
 logger = logging.getLogger(__name__)
 

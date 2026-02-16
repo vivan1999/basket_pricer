@@ -1,19 +1,22 @@
 import logging
-from typing import Dict
+from typing import Dict, Optional
 
-from src.basket_pricer.models.money import Money
-from src.basket_pricer.models.product import Product
-from src.basket_pricer.utils.exceptions import PricerException
+from src.basket_pricer.utils.exceptions import CatalogueError
+
+from .money import Money
+from .product import Product
 
 logger = logging.getLogger(__name__)
 
 
 class Catalogue:
-    _products: Dict[int, Product] = {}  # [{sku, Product}]
 
-    def __init__(self, products: list[Product]):
-        for product in products:
-            self.add_product(product=product)
+    def __init__(self, products: Optional[list[Product]] = None):
+        self._products: Dict[int, Product] = {}  # [{sku, Product}]
+
+        if products:
+            for product in products:
+                self.add_product(product=product)
         logger.debug(f"Catalogue with {len(self._products)} products created.")
 
     def add_product(self, product: Product):
@@ -22,7 +25,7 @@ class Catalogue:
 
         if product.sku in self._products:
             logger.error(f"'{product.name}' is already present in Catalogue")
-            raise PricerException(
+            raise CatalogueError(
                 f"SKU {product.sku} for {product.name} is already present in Catalogue"
             )
 

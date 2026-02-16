@@ -1,10 +1,8 @@
 import logging
 from typing import List, Optional
 
-from src.basket_pricer.models.basket import Basket
-from src.basket_pricer.models.catalogue import Catalogue
-from src.basket_pricer.models.money import Money
-from src.basket_pricer.offers.base_offer import AbstractBaseOffer
+from src.basket_pricer.models import Basket, Catalogue, Money
+from src.basket_pricer.offers import AbstractBaseOffer
 from src.basket_pricer.pricer.offer_summary import OfferApplied
 from src.basket_pricer.pricer.price_summary import (
     PriceSummary,

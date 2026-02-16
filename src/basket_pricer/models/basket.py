@@ -1,7 +1,7 @@
 import logging
 from typing import Dict, Optional
 
-from src.basket_pricer.models.basket_item import BasketItem
+from .basket_item import BasketItem
 
 logger = logging.getLogger(__name__)
 
