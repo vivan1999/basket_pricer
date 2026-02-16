@@ -1,8 +1,9 @@
 import logging
 from typing import List, Optional
 
-from src.basket_pricer.models import Basket, Catalogue, Money
+from src.basket_pricer.models import Basket, Catalogue, Money, BasketItem
 from src.basket_pricer.offers import AbstractBaseOffer
+from src.basket_pricer.offers.offer_resolver import OfferResolver
 from src.basket_pricer.pricer.offer_summary import OfferApplied
 from src.basket_pricer.pricer.price_summary import (
     PriceSummary,
@@ -22,6 +23,7 @@ class BasketPricer:
             )
         self.catalogue = catalogue
         self.offers = offers or []
+        self.offer_resolver = OfferResolver(self.offers)
         for offer in self.offers:
             if not isinstance(offer, AbstractBaseOffer):
                 raise TypeError(
@@ -81,30 +83,74 @@ class BasketPricer:
             sub_total = basket_item_total + sub_total
         logger.debug(f"calculated basket subtotal: {sub_total}")
         return sub_total
+    
+    def _get_applicable_offers(self, basket_item: BasketItem) -> AbstractBaseOffer:
+        """Get all offers And resolve if there are more than one offer applicable on a product
+        and finally return a final maximum discount offer applicable on that item"""
+        applicable = []
+        for offer in self.offers:
+            # Check if offer is applicable to this item
+            if hasattr(offer, 'sku') and offer.sku == basket_item.product.sku:
+                applicable.append(offer)
+            elif hasattr(offer, 'product_skus') and basket_item.product.sku in offer.product_skus:
+                applicable.append(offer)
+        return applicable
 
     def _apply_offers(self, basket: Basket) -> tuple[Money, List[OfferApplied]]:
         total_discount = Money.zero()
         applied_offers: List[OfferApplied] = []
 
-        for offer in self.offers:
-            result = offer.apply_to_basket(basket)
+        # Spliting offers into single‑SKU and multi‑SKU offers
+        # helpful for resolving the conflicts
+        single_sku_offers: List[AbstractBaseOffer] = []
+        multi_sku_offers: List[AbstractBaseOffer] = []
 
+        for offer in self.offers:
+            if hasattr(offer, "sku"):
+                single_sku_offers.append(offer)
+            elif hasattr(offer, "product_skus"):
+                multi_sku_offers.append(offer)
+            else:
+                # fallback: treating as basket‑level / multi‑sku
+                multi_sku_offers.append(offer)
+
+        # Apply multi‑SKU offers ONCE at basket level
+        for offer in multi_sku_offers:
+            result = offer.apply_to_basket(basket)
             if result is None:
                 logger.debug("Offer not applied")
                 continue
 
-            discount, affected_items = result  # destructuring
+            discount, affected_items = result
+            if discount.is_zero():
+                continue
 
-            # offer application record
-            offer_applied = OfferApplied(
-                offer_name=offer.name,
-                discount=discount,
-                products_effected=affected_items,
+            applied_offers.append(
+                OfferApplied(
+                    offer_name=offer.name,
+                    discount=discount,
+                    products_effected=affected_items,
+                )
             )
+            total_discount = total_discount + discount
+            logger.info("multi-sku offer applied to basket")
 
-            applied_offers.append(offer_applied)
+        # Resolve conflicts between single‑SKU offers per item
+        resolver = OfferResolver(single_sku_offers)
 
-            total_discount = total_discount + discount  # add in the total discount
-            logger.info("offer applied to basket")
+        for sku, basket_item in basket.get_items_list().items():
+            choice = resolver.resolve_best_offer_for_item(basket, basket_item)
+            if choice is None:
+                continue
+
+            applied_offers.append(
+                OfferApplied(
+                    offer_name=choice.offer.name,
+                    discount=choice.discount,
+                    products_effected=choice.affected_items,
+                )
+            )
+            total_discount = total_discount + choice.discount
+            logger.info("single-sku offer applied to basket item")
 
         return total_discount, applied_offers

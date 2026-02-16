@@ -31,11 +31,13 @@ class Basket:
             )
             logger.info(
                 "item with sku is already present, updated the quantity in the basket"
+                "item with sku is already present, updated the quantity in the basket"
             )
         else:
             self._items[basket_item.product.sku] = basket_item
             logger.info(f"item with sku {basket_item.product.sku} added in the basket")
         logger.debug(
+            f"Added '{basket_item.product.name}'; total {len(self._items)} distinct products"
             f"Added '{basket_item.product.name}'; total {len(self._items)} distinct products"
         )
 
@@ -63,6 +65,7 @@ class Basket:
 
     def __str__(self):
         if self.is_empty():
+            return "Basket(items=0)"
             return "Basket(items=0)"
         return f"Basket(items={len(self._items)}"
 

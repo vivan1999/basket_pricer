@@ -5,9 +5,9 @@ from src.basket_pricer.models import Basket, BasketItem, Catalogue, Money, Produ
 from src.basket_pricer.offers import (
     BuyXGetCheapestFreeOffer,
     BuyXgetYfree,
-    OffersFactory,
     PercentageOffer,
 )
+from src.basket_pricer.offers.offers_factory import OffersFactory
 
 # ------- MONEY FIXTURES ----------
 
