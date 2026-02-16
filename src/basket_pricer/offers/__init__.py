@@ -7,5 +7,5 @@ __all__ = [
     "AbstractBaseOffer",
     "BuyXGetCheapestFreeOffer",
     "BuyXgetYfree",
-    "PercentageOffer"
+    "PercentageOffer",
 ]
