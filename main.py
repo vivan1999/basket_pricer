@@ -1,10 +1,14 @@
-from src.basket_pricer.models import Basket, BasketItem, Catalogue, Money, Product
-from src.basket_pricer.offers import (
+from basket_pricer import (
+    Basket,
+    BasketItem,
+    BasketPricer,
     BuyXGetCheapestFreeOffer,
     BuyXgetYfree,
+    Catalogue,
+    Money,
     PercentageOffer,
+    Product,
 )
-from src.basket_pricer.pricer.basket_pricer import BasketPricer
 
 
 def main():

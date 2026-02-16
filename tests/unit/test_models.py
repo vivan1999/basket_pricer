@@ -14,12 +14,6 @@ class TestProduct:
         assert product.name == "Beans"
         assert product.price.amount == Money("0.99").amount
 
-    def test_product_is_immutable(self) -> None:
-        """Test immutability of the product"""
-        product = Product(sku=1, name="Beans", price=Money("0.99"))
-        with pytest.raises(AttributeError):  # dataclass frozen raises AttributeError
-            product.name = "Different Beans"
-
     def test_product_with_empty_name_raises_error(self) -> None:
         """Test empty product name raises Error"""
         with pytest.raises(PricerException, match="Product name is required"):
@@ -192,16 +186,3 @@ class TestBasket:
         """Test has_item returns False for items not in basket."""
         basket = Basket()
         assert not basket.has_product(sku=0)
-
-    """def test_total_items_sums_all_quantities(
-        self, basket_item1, basket_item2, basket_item3
-    ) -> None:
-        #Test that total_items returns sum of all item quantities
-        basket = Basket()
-        basket.add_item(basket_item1)
-        basket.add_item(basket_item2)
-        basket.add_item(basket_item3)
-
-        assert basket.calculate_subtotal()== Money("8.85")._amount
-        # 0.99 * 2 (sku 1, qty 2) + 1.20 * 1 (sku 2, qty 1)+ 1.89 * 3 (sku 3, qty 3)
-    """

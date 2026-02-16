@@ -1,7 +1,7 @@
 import logging
 from typing import List, Optional
 
-from src.basket_pricer.models import Basket, Catalogue, Money, BasketItem
+from src.basket_pricer.models import Basket, BasketItem, Catalogue, Money
 from src.basket_pricer.offers import AbstractBaseOffer
 from src.basket_pricer.offers.offer_resolver import OfferResolver
 from src.basket_pricer.pricer.offer_summary import OfferApplied
@@ -83,16 +83,19 @@ class BasketPricer:
             sub_total = basket_item_total + sub_total
         logger.debug(f"calculated basket subtotal: {sub_total}")
         return sub_total
-    
+
     def _get_applicable_offers(self, basket_item: BasketItem) -> AbstractBaseOffer:
         """Get all offers And resolve if there are more than one offer applicable on a product
         and finally return a final maximum discount offer applicable on that item"""
         applicable = []
         for offer in self.offers:
             # Check if offer is applicable to this item
-            if hasattr(offer, 'sku') and offer.sku == basket_item.product.sku:
+            if hasattr(offer, "sku") and offer.sku == basket_item.product.sku:
                 applicable.append(offer)
-            elif hasattr(offer, 'product_skus') and basket_item.product.sku in offer.product_skus:
+            elif (
+                hasattr(offer, "product_skus")
+                and basket_item.product.sku in offer.product_skus
+            ):
                 applicable.append(offer)
         return applicable
 
