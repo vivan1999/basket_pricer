@@ -54,10 +54,23 @@ Responsible for calculating totals/logic (basket pricer), and returning in prope
     pytest --cov tests/
 
 ### Running Project
+A complete and runnable example (main.py) showing how to construct a catalogue, build a basket, attach offers, and calculate the final price.
 
     python main.py
 
-Otherwise, this project is designed to be imported as a library component.
+#### Otherwise, this project is designed to be imported as a library component,  so most consumers only need imports from the top level:
+    from basket_pricer import (
+    Basket,
+    BasketItem,
+    Catalogue,
+    Money,
+    Product,
+    BasketPricer,
+    PercentageOffer,
+    BuyXgetYfree,
+    BuyXGetCheapestFreeOffer,
+    )
+
 
 ### Code Formatting and Quality
 
