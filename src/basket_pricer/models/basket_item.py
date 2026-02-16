@@ -1,7 +1,7 @@
 import logging
 from dataclasses import dataclass
 
-from src.basket_pricer.models.product import Product
+from .product import Product
 
 logger = logging.getLogger(__name__)
 

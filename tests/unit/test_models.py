@@ -1,9 +1,6 @@
 import pytest
 
-from src.basket_pricer.models.basket import Basket
-from src.basket_pricer.models.basket_item import BasketItem
-from src.basket_pricer.models.money import Money
-from src.basket_pricer.models.product import Product
+from src.basket_pricer.models import Basket, BasketItem, Money, Product
 from src.basket_pricer.utils.exceptions import PricerException
 
 

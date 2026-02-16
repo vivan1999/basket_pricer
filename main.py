@@ -21,9 +21,9 @@ catalogue = Catalogue([pro1, pro2, pro3, pro4, pro5, pro6])
 
 basket = Basket(
     [
-        BasketItem(product=pro4, qty=3),
-        BasketItem(product=pro5, qty=1),
-        BasketItem(product=pro6, qty=3),
+        BasketItem(product=pro4, qty=6),
+        # BasketItem(product=pro5, qty=1),
+        # BasketItem(product=pro6, qty=3),
     ]
 )
 
@@ -34,7 +34,7 @@ offers = [
     BuyXGetCheapestFreeOffer(
         id="buy3getcheapestfree",
         name="Buy 3 Get Cheapest free",
-        product_skus=[4, 5, 6],
+        product_skus=[3, 5, 6],
         quantity=3,
     ),
 ]

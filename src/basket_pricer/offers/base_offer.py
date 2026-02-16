@@ -3,8 +3,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import List, Optional
 
-from src.basket_pricer.models.basket import Basket
-from src.basket_pricer.models.money import Money
+from src.basket_pricer.models import Basket, Money
 from src.basket_pricer.utils.exceptions import InvalidOfferConfigError
 
 logger = logging.getLogger(__name__)
